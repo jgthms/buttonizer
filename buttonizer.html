@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+    <meta name="author" content="StreetHub">
+    <title>Instagrammer</title>
+    <style type="text/css">
+      body{ font: 16px/20px monospace;}
+      pre{ background: #eee; clear: right; color: #999; font-size: 11px;}
+      pre span{ color: #333;}
+      #test{ background: #eee; float: right; height: 100px; margin-bottom: 20px; width: 100px;}
+    </style>
+  </head>
+  <body>
+    <div id="test"></div>
+    <p>#HEX<input id="hex" type="text" value="ED6C63"></p>
+    <p><input id="go" type="submit" value="Convert"></p>
+    <pre>
+.button-green{ background-color: #<span class="a">a</span>; @include background-image(linear-gradient(#<span class="b">b</span> 0, #<span class="c">c</span> 100%)); border-color: #<span class="d">d</span>; box-shadow: 0 1px 0 #<span class="e">e</span> inset, 0 1px 4px rgba(0, 0, 0, 0.3); color: white; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);}
+  .button-green:hover{ background-color: #<span class="c">c</span>; border-color: #<span class="f">f</span>;}
+  .button-green:active{ background-color: #<span class="c">c</span>; border-color: #<span class="d">d</span>; box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);}
+    </pre>
+    <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="tinycolor.js"></script>
+    <script type="text/javascript">
+      jQuery(document).ready(function ($) {
+
+        var $hex = $('#hex');
+        var $test = $('#test');
+        var $go = $('#go');
+        var $a = $('.a');
+        var $b = $('.b');
+        var $c = $('.c');
+        var $d = $('.d');
+        var $e = $('.e');
+        var $f = $('.f');
+
+        function ToH(h) {
+          var result = h;
+          if (h < 0) {
+            result += 360;
+          } else if (h > 360) {
+            result -= 360;
+          }
+          return result;
+        }
+
+        function ToS(s) {
+          var result = s;
+          if (s < 0) {
+            result = 0;
+          } else if (s > 1) {
+            result = 1;
+          }
+          return result;
+        }
+
+        function ToV(v) {
+          var result = v;
+          if (v < 0) {
+            result = 0;
+          } else if (v > 1) {
+            result = 1;
+          }
+          return result;
+        }
+
+        $go.click( function() {
+          var source = $hex.val();
+          var source_hex = tinycolor(source);
+          var source_hsv = source_hex.toHsv();
+          // Background
+          var a = source_hsv;
+          $a.text(source);
+          console.log(a);
+          // Gradient Top
+          var b = tinycolor({ h: ToH((a.h + 3)), s: ToS((a.s + 0.11)), v: ToV((a.v + 0.02))});
+          $b.text(b.toHex());
+          // Gradient Bottom
+          var c = tinycolor({ h: ToH((a.h + 3)), s: ToS((a.s + 0.31)), v: ToV((a.v - 0.03))});
+          $c.text(c.toHex());
+          // Border
+          var d = tinycolor({ h: ToH((a.h + 3)), s: ToS((a.s + 0.11)), v: ToV((a.v - 0.18))});
+          $d.text(d.toHex());
+          // Box-shadow inset
+          var e = tinycolor({ h: ToH((a.h - 5)), s: ToS((a.s)), v: ToV((a.v + 0.08))});
+          console.log(e.toHsv());
+          $e.text(e.toHex());
+          // Hover Border
+          var f = tinycolor({ h: ToH((a.h + 23)), s: ToS((a.s + 0.15)), v: ToV((a.v - 0.28))});
+          $f.text(f.toHex());
+          $test.css('background', '#' + b.toHex());
+        });
+
+      });
+    </script>
+  </body>
+</html>
