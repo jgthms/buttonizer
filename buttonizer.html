@@ -16,11 +16,15 @@
   <body>
     <div id="test"></div>
     <p>#HEX<input id="hex" type="text" value="ED6C63"></p>
-    <p><input id="go" type="submit" value="Convert"></p>
+    <p>
+      <input id="background" type="submit" value="From background">
+      <input id="border" type="submit" value="From border">
+      <input id="top" type="submit" value="From gradient top">
+    </p>
     <pre>
-.button-green{ background-color: #<span class="a">a</span>; @include background-image(linear-gradient(#<span class="b">b</span> 0, #<span class="c">c</span> 100%)); border-color: #<span class="d">d</span>; box-shadow: 0 1px 0 #<span class="e">e</span> inset, 0 1px 4px rgba(0, 0, 0, 0.3); color: white; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);}
-  .button-green:hover{ background-color: #<span class="c">c</span>; border-color: #<span class="f">f</span>;}
-  .button-green:active{ background-color: #<span class="c">c</span>; border-color: #<span class="d">d</span>; box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);}
+.button-whatever{ background-color: #<span class="a">a</span>; @include background-image(linear-gradient(#<span class="b">b</span> 0, #<span class="c">c</span> 100%)); border-color: #<span class="d">d</span>; box-shadow: 0 1px 0 #<span class="e">e</span> inset, 0 1px 4px rgba(0, 0, 0, 0.3); color: white; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);}
+  .button-whatever:hover{ background-color: #<span class="c">c</span>; border-color: #<span class="f">f</span>;}
+  .button-whatever:active{ background-color: #<span class="c">c</span>; border-color: #<span class="d">d</span>; box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);}
     </pre>
     <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="tinycolor.js"></script>
@@ -29,7 +33,9 @@
 
         var $hex = $('#hex');
         var $test = $('#test');
-        var $go = $('#go');
+        var $background = $('#background');
+        var $border = $('#border');
+        var $top = $('#top');
         var $a = $('.a');
         var $b = $('.b');
         var $c = $('.c');
@@ -67,7 +73,7 @@
           return result;
         }
 
-        $go.click( function() {
+        $background.click( function() {
           var source = $hex.val();
           var source_hex = tinycolor(source);
           var source_hsv = source_hex.toHsv();
@@ -90,6 +96,59 @@
           $e.text(e.toHex());
           // Hover Border
           var f = tinycolor({ h: ToH((a.h + 23)), s: ToS((a.s + 0.15)), v: ToV((a.v - 0.28))});
+          $f.text(f.toHex());
+          $test.css('background', '#' + b.toHex());
+        });
+
+        $border.click( function() {
+          var source = $hex.val();
+          var source_hex = tinycolor(source);
+          var source_hsv = source_hex.toHsv();
+          // Border
+          var d = source_hsv;
+          $d.text(source);
+          // Background
+          var a = source_hsv;
+          var a = tinycolor({ h: ToH((d.h - 3)), s: ToS((d.s - 0.11)), v: ToV((d.v + 0.18))});
+          $a.text(a.toHex());
+          // Gradient Top
+          var b = tinycolor({ h: ToH((d.h)), s: ToS((d.s)), v: ToV((d.v + 0.20))});
+          $b.text(b.toHex());
+          // Gradient Bottom
+          var c = tinycolor({ h: ToH((d.h)), s: ToS((d.s + 0.20)), v: ToV((d.v + 0.15))});
+          $c.text(c.toHex());
+          // Box-shadow inset
+          var e = tinycolor({ h: ToH((d.h - 8)), s: ToS((d.s - 0.11)), v: ToV((d.v + 0.26))});
+          console.log(e.toHsv());
+          $e.text(e.toHex());
+          // Hover Border
+          var f = tinycolor({ h: ToH((d.h + 20)), s: ToS((d.s + 0.04)), v: ToV((d.v - 0.10))});
+          $f.text(f.toHex());
+          $test.css('background', '#' + b.toHex());
+        });
+
+        $top.click( function() {
+          var source = $hex.val();
+          var source_hex = tinycolor(source);
+          var source_hsv = source_hex.toHsv();
+          // Gradient Top
+          var b = source_hsv;
+          $b.text(source);
+          // Background
+          var a = tinycolor({ h: ToH((b.h - 3)), s: ToS((b.s - 0.11)), v: ToV((b.v - 0.02))});
+          $a.text(a.toHex());
+          // Gradient Bottom
+          var c = tinycolor({ h: ToH((b.h)), s: ToS((b.s + 0.20)), v: ToV((b.v - 0.05))});
+          $c.text(c.toHex());
+          // Border
+          var d = tinycolor({ h: ToH((b.h)), s: ToS((b.s)), v: ToV((b.v - 0.20))});
+          $d.text(d.toHex());
+          // Box-shadow inset
+          var e = tinycolor({ h: ToH((b.h - 8)), s: ToS((b.s - 0.11)), v: ToV((b.v + 0.06))});
+          console.log(e.toHsv());
+          $e.text(e.toHex());
+          // Hover Border
+          var f = tinycolor({ h: ToH((b.h + 20)), s: ToS((b.s + 0.04)), v: ToV((b.v - 0.30))});
           $f.text(f.toHex());
           $test.css('background', '#' + b.toHex());
         });
